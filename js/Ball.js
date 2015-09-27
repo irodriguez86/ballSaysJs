@@ -1,22 +1,25 @@
 function Ball(x, y) {
     this.x = x;
     this.y = y;
-    this.sprite = Ball.getSprite(this.x, this.y, 0xFF0000, 1, 30);
+    this.sprite = Ball.getSprite(this.x, this.y, 1, 30);
 }
 
-Ball.getSprite = function(x, y, color, alpha, size) {
-    var graphics = BS.game.add.graphics(0, 0),
-        sprite = BS.game.add.sprite(x, y);
+Ball.getSprite = function(x, y, alpha, size) {
 
-    BS.game.physics.enable(sprite, Phaser.Physics.ARCADE);
+    var sprite = BS.game.add.sprite(x, y, 'ball');
 
-    graphics.beginFill(color, alpha);
-    graphics.drawCircle(0, 0, size);
+    sprite.pivot.x = sprite.width/2;
+    sprite.pivot.y = sprite.height/2;
+    sprite.inputEnabled = true;
 
-    //sprite.body.setCircle(graphics._radius, 0, 0);
+    sprite.input.pixelPerfectOver = true;
+    sprite.input.pixelPerfectClick = true;
+    sprite.input.useHandCursor = true;
 
+    BS.game.physics.arcade.enable([sprite]);
 
-    sprite.addChild(graphics);
+    sprite.body.collideWorldBounds = true;
+    // use the bitmap data as the texture for the sprite
     return sprite;
 };
 
